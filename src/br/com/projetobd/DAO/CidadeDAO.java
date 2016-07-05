@@ -62,61 +62,32 @@ private Connection connection;
 		}
 	}
 	
-	/*public List<Cidade> getBuscar() {
-	String sql = "select * from cidade where nome_cidade like '%?%'";
-	try {
-		List<Cidade> cidades = new ArrayList<Cidade>();
-		PreparedStatement stmt = (PreparedStatement) this.connection.
-				prepareStatement(sql);
-		ResultSet rs = stmt.executeQuery();
-		
-		while (rs.next()) {
-			//criando o objeto Cidade
-			//Cidade cidade = new Cidade();
-			cidade.setId(rs.getLong("id"));
-			cidade.setNomeCidade(rs.getString("nome_cidade"));
-			cidade.setSiglaEstado(rs.getString("sigla_estado"));
-			
-			//adiciona o objeto a lista
-			cidades.add(cidade);
-		}
-		rs.close();
-		stmt.close();
-		return cidades;
-	} catch (SQLException e) {
-		throw new RuntimeException(e);
-	}
-	
-
-
-	try {
-		//List<Cidade> cidades = new ArrayList<Cidade>();
-		PreparedStatement stmt = (PreparedStatement) this.connection.
-				prepareStatement("select * from cidade where nome_cidade like '%?%'");
-		ResultSet rs = stmt.executeQuery();
-		
-		while (rs.next()) {
-			//criando o objeto Cidade
-			Cidade city = new Cidade();
-			city.setId(rs.getLong("id"));
-			city.setNomeCidade(rs.getString("nome_cidade"));
-			city.setSiglaEstado(rs.getString("sigla_estado"));*/
-			
-			//adiciona o objeto a lista
-			/*cidades.add(city);
-		if (rs.next()) {
-			Cidade city = new Cidade();
-			city.setId(rs.getLong("id"));
-			city.setNomeCidade(rs.getString("nome_cidade"));
-			city.setSiglaEstado(rs.getString("sigla_estado"));
-		}
-		rs.close();
-		stmt.close();
-		//return city;
-	} catch (SQLException e) {
-		throw new RuntimeException(e);
-	}
-}*/
+	public List<Cidade> getBuscar(Cidade cidade) {
+        String sql = "select * from cidade where nome_cidade like ? ";
+        try {
+            List<Cidade> cidades = new ArrayList<Cidade>();
+            PreparedStatement stmt = (PreparedStatement) this.connection.
+                    prepareStatement(sql);
+            stmt.setString(1, "%" +cidade.getNomeCidade()+ "%");
+            ResultSet rs = stmt.executeQuery();
+           
+            while (rs.next()) {
+                //criando o objeto Cidade
+                //Cidade cidade = new Cidade();
+                cidade.setId(rs.getLong("id"));
+                cidade.setNomeCidade(rs.getString("nome_cidade"));
+                cidade.setSiglaEstado(rs.getString("sigla_estado"));
+               
+                //adiciona o objeto a lista
+                cidades.add(cidade);
+            }
+            rs.close();
+            stmt.close();
+            return cidades;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 	
 	public void altera(Cidade cidade) {
 		String sql = "update cidade set nome_cidade=?, sigla_estado=? where id=? ";
